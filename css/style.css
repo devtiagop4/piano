@@ -174,6 +174,34 @@ h2 {
   color: var(--gold);
 }
 
+.octave-selector {
+  display: none;
+}
+
+.octave-button {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(215, 180, 119, 0.3);
+  border-radius: 10px;
+  color: var(--gold-bright);
+  background: rgba(215, 180, 119, 0.08);
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.octave-button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.octave-button:focus-visible {
+  outline: 2px solid var(--gold-bright);
+  outline-offset: 2px;
+}
+
 .keyboard-scroll {
   min-width: 0;
   overflow-x: auto;
@@ -194,6 +222,10 @@ h2 {
   position: relative;
   flex: 0 0 44px;
   height: 100%;
+}
+
+.piano-keys {
+  margin-inline: auto;
 }
 
 /* The white keys form the base; black keys are layered over their shared edges. */
@@ -334,7 +366,7 @@ kbd {
   color: #555760;
 }
 
-@media (max-width: 760px) {
+@media (max-width: 1060px) {
   body {
     padding: 32px 16px;
   }
@@ -354,6 +386,32 @@ kbd {
   .volume-control input {
     flex: 1;
     min-width: 0;
+  }
+
+  .range-badge {
+    display: none;
+  }
+
+  .octave-selector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    margin: -4px 0 16px;
+    color: #d3c4a8;
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .keyboard-scroll {
+    overflow: hidden;
+    padding-bottom: 2px;
+  }
+
+  .piano-keys[data-active-octave="3"] .white-key-group:not([data-octave="3"]),
+  .piano-keys[data-active-octave="4"] .white-key-group:not([data-octave="4"]),
+  .piano-keys[data-active-octave="5"] .white-key-group:not([data-octave="5"]) {
+    display: none;
   }
 
   .touch-hint {
@@ -385,7 +443,7 @@ kbd {
   }
 
   .white-key-group {
-    flex-basis: 40px;
+    flex-basis: min(44px, max(36px, calc((100vw - 68px) / 7)));
   }
 
   .key.black {
@@ -402,6 +460,15 @@ kbd {
     display: block;
     margin-left: 0;
   }
+
+  .key .note-label {
+    margin-bottom: 14px;
+    font-size: 10px;
+  }
+
+  .key kbd {
+    display: none;
+  }
 }
 
 @media (max-width: 380px) {
@@ -413,10 +480,6 @@ kbd {
   .instrument {
     padding-right: 10px;
     padding-left: 10px;
-  }
-
-  .white-key-group {
-    flex-basis: 38px;
   }
 
   .key.black {

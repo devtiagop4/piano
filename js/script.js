@@ -9,8 +9,12 @@ const KEY_CODES = [
 const keyboardKey = document.querySelector("#piano-keys");
 const volumeSlider = document.querySelector("#volume");
 const volumeValue = document.querySelector("#volume-value");
+const previousOctaveButton = document.querySelector("#previous-octave");
+const nextOctaveButton = document.querySelector("#next-octave");
+const activeOctaveLabel = document.querySelector("#active-octave-label");
 const activeAudios = new Map();
 const activeTimers = new WeakMap();
+let activeOctave = 4;
 const notes = Array.from({ length: 3 }, (_, octaveIndex) =>
   NOTE_NAMES.map((name, noteIndex) => ({
     name: `${name}${octaveIndex + 3}`,
@@ -27,6 +31,7 @@ function createKeyboard() {
   whiteNotes.forEach((note) => {
     const keyGroup = document.createElement("div");
     keyGroup.className = "white-key-group";
+    keyGroup.dataset.octave = note.name.slice(-1);
 
     const whiteKey = createKey(note, "white");
     keyGroup.append(whiteKey);
@@ -38,6 +43,16 @@ function createKeyboard() {
 
     keyboardKey.append(keyGroup);
   });
+
+  updateActiveOctave();
+}
+
+// Em telas menores, mostra uma oitava por vez para manter as teclas grandes o bastante para tocar.
+function updateActiveOctave() {
+  keyboardKey.dataset.activeOctave = activeOctave;
+  activeOctaveLabel.textContent = `Oitava ${activeOctave} · C${activeOctave} — B${activeOctave}`;
+  previousOctaveButton.disabled = activeOctave === 3;
+  nextOctaveButton.disabled = activeOctave === 5;
 }
 
 // Usa botões nativos para manter as teclas acessíveis por mouse e tecnologias assistivas.
@@ -93,12 +108,27 @@ function playNote(key) {
 // Dispara as notas pelo código físico da tecla e ignora teclas repetidas ao segurar.
 document.addEventListener("keydown", (event) => {
   if (event.repeat || event.ctrlKey || event.altKey || event.metaKey) return;
-  if (event.target instanceof HTMLElement && event.target.closest("input, textarea, select, [contenteditable='true']")) return;
+  if (event.target instanceof HTMLElement && event.target.closest("input, textarea, select, .octave-button, [contenteditable='true']")) return;
 
   const key = keyboardKey.querySelector(`[data-key-code="${event.code}"]`);
   if (key) {
     event.preventDefault();
     playNote(key);
+  }
+});
+
+// Navega pelas oitavas no celular sem reduzir as teclas a tamanhos difíceis de tocar.
+previousOctaveButton.addEventListener("click", () => {
+  if (activeOctave > 3) {
+    activeOctave -= 1;
+    updateActiveOctave();
+  }
+});
+
+nextOctaveButton.addEventListener("click", () => {
+  if (activeOctave < 5) {
+    activeOctave += 1;
+    updateActiveOctave();
   }
 });
 
