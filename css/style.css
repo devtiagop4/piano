@@ -1,0 +1,398 @@
+/* Base visual system: a warm gold accent over a deep, low-glare studio background. */
+:root {
+  color-scheme: dark;
+  font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  --background: #111318;
+  --panel: #1b1e25;
+  --panel-border: rgba(255, 255, 255, 0.08);
+  --text: #f5f2eb;
+  --muted: #9a9ca5;
+  --gold: #d7b477;
+  --gold-bright: #f0d09a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  place-items: center;
+  padding: 48px 24px;
+  color: var(--text);
+  background:
+    radial-gradient(ellipse at 50% 20%, rgba(95, 78, 53, 0.2), transparent 46%),
+    var(--background);
+}
+
+button,
+input {
+  font: inherit;
+}
+
+/* Main studio card and its header. */
+.piano-app {
+  width: min(100%, 1120px);
+  min-width: 0;
+}
+
+.studio-header,
+.brand,
+.volume-control,
+.instrument-heading,
+.studio-footer {
+  display: flex;
+  align-items: center;
+}
+
+.studio-header {
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+  padding: 0 8px;
+}
+
+.brand {
+  gap: 13px;
+}
+
+.brand-mark {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(215, 180, 119, 0.5);
+  border-radius: 13px;
+  color: var(--gold-bright);
+  background: linear-gradient(145deg, rgba(215, 180, 119, 0.16), rgba(215, 180, 119, 0.04));
+  font-family: Georgia, serif;
+  font-size: 25px;
+  font-style: italic;
+}
+
+.eyebrow {
+  margin: 0 0 5px;
+  color: var(--gold);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+}
+
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 0;
+  font-size: 21px;
+  font-weight: 600;
+  letter-spacing: -0.035em;
+}
+
+h1 span {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.volume-control {
+  gap: 12px;
+  color: #d4d2ce;
+  font-size: 13px;
+}
+
+.volume-icon {
+  color: var(--gold);
+  font-size: 18px;
+}
+
+.volume-label {
+  color: var(--muted);
+}
+
+.volume-control input {
+  width: 112px;
+  height: 4px;
+  accent-color: var(--gold);
+  cursor: pointer;
+}
+
+.volume-control output {
+  width: 34px;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Instrument panel and horizontally scrollable keyboard for smaller screens. */
+.instrument {
+  min-width: 0;
+  overflow: hidden;
+  padding: 30px 30px 22px;
+  border: 1px solid var(--panel-border);
+  border-radius: 20px;
+  background: linear-gradient(145deg, rgba(34, 37, 45, 0.98), rgba(24, 26, 32, 0.98));
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.36), inset 0 1px rgba(255, 255, 255, 0.035);
+}
+
+.instrument-heading {
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.instrument-heading .eyebrow {
+  margin-bottom: 6px;
+}
+
+h2 {
+  margin-bottom: 0;
+  font-size: 18px;
+  font-weight: 550;
+  letter-spacing: -0.02em;
+}
+
+.range-badge {
+  padding: 8px 11px;
+  border: 1px solid rgba(215, 180, 119, 0.18);
+  border-radius: 999px;
+  color: #d3c4a8;
+  background: rgba(215, 180, 119, 0.06);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.range-badge span {
+  padding: 0 3px;
+  color: var(--gold);
+}
+
+.keyboard-scroll {
+  min-width: 0;
+  overflow-x: auto;
+  padding: 0 2px 12px;
+  scrollbar-color: #55504a transparent;
+  scrollbar-width: thin;
+}
+
+.piano-keys {
+  display: flex;
+  width: max-content;
+  height: 240px;
+  padding: 0 0 2px;
+  user-select: none;
+}
+
+.white-key-group {
+  position: relative;
+  flex: 0 0 44px;
+  height: 100%;
+}
+
+/* The white keys form the base; black keys are layered over their shared edges. */
+.key {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  border: 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 100ms ease, transform 100ms ease, box-shadow 100ms ease;
+}
+
+.key:focus-visible {
+  z-index: 3;
+  outline: 3px solid var(--gold-bright);
+  outline-offset: 2px;
+}
+
+.key.white {
+  inset: 0 1px 0 0;
+  z-index: 1;
+  border: 1px solid #d5d3cf;
+  border-radius: 0 0 7px 7px;
+  color: #77736c;
+  background: linear-gradient(180deg, #fffefa 0%, #f0eee8 83%, #e0ddd5 100%);
+  box-shadow: 0 5px 0 #b8b4ab, 0 8px 12px rgba(0, 0, 0, 0.18);
+}
+
+.key.white:hover {
+  background: linear-gradient(180deg, #fff 0%, #f7f0e2 100%);
+}
+
+.key.white.active {
+  transform: translateY(3px);
+  border-color: #cfb47e;
+  background: linear-gradient(180deg, #f8e9c9, #e8d5ae);
+  box-shadow: 0 2px 0 #a88b56, 0 4px 8px rgba(0, 0, 0, 0.14);
+}
+
+.key.black {
+  top: 0;
+  right: -13px;
+  z-index: 2;
+  width: 27px;
+  height: 145px;
+  border: 1px solid #090a0d;
+  border-radius: 0 0 5px 5px;
+  color: #c6c1b6;
+  background: linear-gradient(100deg, #35363a, #101114 42%, #202126);
+  box-shadow: 0 5px 0 #08090b, 0 8px 11px rgba(0, 0, 0, 0.42);
+}
+
+.key.black:hover {
+  background: linear-gradient(100deg, #4a4640, #19191b 48%, #302c25);
+}
+
+.key.black.active {
+  transform: translateY(3px);
+  color: var(--gold-bright);
+  background: linear-gradient(100deg, #776443, #393126 48%, #51432b);
+  box-shadow: 0 2px 0 #282015, 0 4px 8px rgba(0, 0, 0, 0.35);
+}
+
+.note-label {
+  margin-bottom: 9px;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.key.black .note-label {
+  margin-bottom: 8px;
+  font-size: 8px;
+}
+
+kbd {
+  min-width: 17px;
+  margin-bottom: 8px;
+  padding: 2px 3px;
+  border-radius: 4px;
+  color: #918d85;
+  background: rgba(35, 34, 31, 0.07);
+  font-family: inherit;
+  font-size: 8px;
+  line-height: 1.2;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.key.black kbd {
+  min-width: 15px;
+  margin-bottom: 7px;
+  color: #aaa59a;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.key.black.active kbd {
+  color: #f0d09a;
+}
+
+.keyboard-hint {
+  margin: 12px 0 0;
+  color: #c3c0ba;
+  font-size: 12px;
+  text-align: center;
+}
+
+.keyboard-hint span {
+  margin-left: 5px;
+  color: var(--muted);
+}
+
+/* Compact status line keeps the interface balanced without distracting from play. */
+.studio-footer {
+  justify-content: center;
+  gap: 9px;
+  margin-top: 22px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #8eb68f;
+  box-shadow: 0 0 10px rgba(142, 182, 143, 0.55);
+}
+
+.footer-divider {
+  color: #555760;
+}
+
+@media (max-width: 600px) {
+  body {
+    align-items: start;
+    padding: 32px 14px;
+  }
+
+  .studio-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 20px;
+    padding: 0 3px;
+  }
+
+  .volume-control {
+    width: 100%;
+  }
+
+  .volume-control input {
+    flex: 1;
+  }
+
+  .instrument {
+    padding: 22px 16px 18px;
+    border-radius: 16px;
+  }
+
+  .instrument-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  .piano-keys {
+    height: 215px;
+  }
+
+  .white-key-group {
+    flex-basis: 40px;
+  }
+
+  .key.black {
+    right: -12px;
+    width: 25px;
+    height: 130px;
+  }
+
+  .keyboard-hint {
+    line-height: 1.7;
+  }
+
+  .keyboard-hint span {
+    display: block;
+    margin-left: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

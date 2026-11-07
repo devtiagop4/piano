@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#111318">
+  <meta name="description" content="Toque piano online com três oitavas e sons de piano reais.">
+  <title>Piano Studio | Piano Virtual</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main class="piano-app">
+    <!-- Cabeçalho com a identidade do instrumento e o controle global de volume. -->
+    <header class="studio-header">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">P</span>
+        <div>
+          <p class="eyebrow">SEU ESTÚDIO MUSICAL</p>
+          <h1>Piano <span>Studio</span></h1>
+        </div>
+      </div>
+
+      <label class="volume-control" for="volume">
+        <span class="volume-icon" aria-hidden="true">♫</span>
+        <span class="volume-label">Volume</span>
+        <input id="volume" type="range" min="0" max="1" step="0.01" value="0.65">
+        <output id="volume-value" for="volume">65%</output>
+      </label>
+    </header>
+
+    <!-- O JavaScript cria as 36 teclas usando as amostras da pasta notes/. -->
+    <section class="instrument" aria-labelledby="instrument-title">
+      <div class="instrument-heading">
+        <div>
+          <p class="eyebrow">INSTRUMENTO VIRTUAL</p>
+          <h2 id="instrument-title">Piano acústico</h2>
+        </div>
+        <span class="range-badge">3 oitavas <span aria-hidden="true">·</span> C3 — B5</span>
+      </div>
+
+      <div class="keyboard-scroll" aria-label="Teclado do piano">
+        <div class="piano-keys" id="piano-keys"></div>
+      </div>
+
+      <p class="keyboard-hint">
+        Clique nas teclas ou use o teclado do computador.
+        <span>As letras indicadas em cada tecla são os atalhos.</span>
+      </p>
+    </section>
+
+    <footer class="studio-footer">
+      <span class="status-dot" aria-hidden="true"></span>
+      <span>Pronto para tocar</span>
+      <span class="footer-divider" aria-hidden="true">/</span>
+      <span>36 sons de piano</span>
+      <span class="footer-divider" aria-hidden="true">/</span>
+      <span>Desenvolvido por Tiago</span>
+    </footer>
+  </main>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
